@@ -181,7 +181,7 @@
     function lockButton() {
         const btn = document.getElementById('spinBtn');
         btn.disabled = true;
-        setTimeout(() => { btn.disabled = false; }, 5000);
+        setTimeout(() => { btn.disabled = false; }, 3000);
     }
 
     function spin() {
@@ -234,8 +234,8 @@
             msg = `🪙 Пара [${pairedDigit}]! Дает 5 x${digitMult} x${roundMultiplier.toFixed(1)} = +${gained} очков!`;
             if (pairedDigit === 7) isSevenCombo = true;
         } else {
-            gained = 4; 
-            msg = "👀 Просто цифры... (+4)";
+            gained = 3; 
+            msg = "👀 Просто цифры... (+3)";
         }
 
         if (combo !== "228" && combo !== "666") {

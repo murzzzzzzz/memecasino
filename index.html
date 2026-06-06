@@ -141,7 +141,7 @@
     
     let baseSpins = 3; 
     let spinsLeft = 3;
-    let targetScore = 25; 
+    let targetScore = 10; 
     let roundMultiplier = 1.0; 
 
     let maxRoundRecord = localStorage.getItem('MemeCasino_max_round') || 1;
@@ -239,7 +239,7 @@
 
         // 6. ОБЫЧНЫЕ ЦИФРЫ
         } else {
-            gained = 3; 
+            gained = 4; 
             msg = "👀 Просто цифры... (+3)";
         }
 
@@ -275,7 +275,7 @@
         
         setTimeout(() => {
             currentRound++;
-            targetScore += 25; 
+            targetScore += 10; 
             roundMultiplier += 0.1; 
             spinsLeft = baseSpins + (currentRound - 1); 
             score = 0; 
@@ -292,7 +292,7 @@
         
         setTimeout(() => {
             currentRound += 2; 
-            targetScore += 50; 
+            targetScore += 20; 
             roundMultiplier += 0.2; 
             spinsLeft = baseSpins + (currentRound - 1);
             score = 0;

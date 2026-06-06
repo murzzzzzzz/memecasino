@@ -141,7 +141,7 @@
     
     let baseSpins = 3; 
     let spinsLeft = 3;
-    let targetScore = 10; // Исправлено на 10
+    let targetScore = 10; 
     let roundMultiplier = 1.0; 
 
     let maxRoundRecord = localStorage.getItem('MemeCasino_max_round') || 1;
@@ -177,6 +177,7 @@
         document.getElementById('spins').innerText = `${spinsLeft}/${baseSpins + (currentRound - 1)}`;
     }
 
+    // Новая функция блокировки
     function lockButton() {
         const btn = document.getElementById('spinBtn');
         btn.disabled = true;
@@ -186,7 +187,7 @@
     function spin() {
         if (spinsLeft <= 0) return;
 
-        lockButton(); // Включение блокировки кнопки
+        lockButton(); // ВЫЗОВ БЛОКИРОВКИ
         spinsLeft--;
         playMemeSound("click.mp3");
 
@@ -234,7 +235,7 @@
             if (pairedDigit === 7) isSevenCombo = true;
         } else {
             gained = 4; 
-            msg = "👀 Просто цифры... (+3)";
+            msg = "👀 Просто цифры... (+4)";
         }
 
         if (combo !== "228" && combo !== "666") {
@@ -268,10 +269,10 @@
         
         setTimeout(() => {
             currentRound++;
-            targetScore += 5; // Прибавка 5 очков
-            roundMultiplier += 0.1; 
+            targetScore += 5; // Увеличиваем на 5
+            roundMultiplier += 0.1; // Растет
             spinsLeft = baseSpins + (currentRound - 1); 
-            score = 0; // ОБНУЛЕНИЕ ОЧКОВ
+            score = 0; // ОБНУЛЕНИЕ
             
             updateUI();
             document.getElementById('slots').innerText = "000";
@@ -288,7 +289,7 @@
             targetScore += 10; 
             roundMultiplier += 0.2; 
             spinsLeft = baseSpins + (currentRound - 1);
-            score = 0; // ОБНУЛЕНИЕ ОЧКОВ
+            score = 0; // ОБНУЛЕНИЕ
             
             updateUI();
             document.getElementById('slots').innerText = "000";
@@ -310,7 +311,7 @@
             currentRound = 1;
             score = 0;
             targetScore = 10;
-            roundMultiplier = 1.0;
+            roundMultiplier = 1.0; // СБРОС МНОЖИТЕЛЯ
             spinsLeft = baseSpins;
             
             updateUI();

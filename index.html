@@ -116,7 +116,7 @@
     <div class="stats-grid">
         <div class="stat-box">
             <div class="stat-label">Очки / Цель</div>
-            <div class="stat-val"><span id="score" class="score-highlight">0</span> / <span id="targetScore" class="target-highlight">25</span></div>
+            <div class="stat-val"><span id="score" class="score-highlight">0</span> / <span id="targetScore" class="target-highlight">10</span></div>
         </div>
         <div class="stat-box">
             <div class="stat-label">Крутки</div>
@@ -141,12 +141,11 @@
     
     let baseSpins = 3; 
     let spinsLeft = 3;
-    let targetScore = 10; 
+    let targetScore = 10; // Исправлено на 10
     let roundMultiplier = 1.0; 
 
     let maxRoundRecord = localStorage.getItem('MemeCasino_max_round') || 1;
 
-    // Однотипные вариации (три в ряд)
     const tripleCombos = {
         "111": { text: "⭐ ОДИНЕШЕНЬКИ! +25 очков", bonus: 25, sound: "triple.mp3" },
         "222": { text: "⭐ ДВОЙНОЙ УДАР! +25 очков", bonus: 25, sound: "triple.mp3" },
@@ -178,9 +177,16 @@
         document.getElementById('spins').innerText = `${spinsLeft}/${baseSpins + (currentRound - 1)}`;
     }
 
+    function lockButton() {
+        const btn = document.getElementById('spinBtn');
+        btn.disabled = true;
+        setTimeout(() => { btn.disabled = false; }, 5000);
+    }
+
     function spin() {
         if (spinsLeft <= 0) return;
 
+        lockButton(); // Включение блокировки кнопки
         spinsLeft--;
         playMemeSound("click.mp3");
 
@@ -195,13 +201,10 @@
         let msg = "";
         let isSevenCombo = false; 
 
-        // 1. ЛОВУШКА 666
         if (combo === "666") {
             score = 0; 
             msg = "👹 666! ОБНУЛЕНИЕ ВСЕХ ОЧКОВ!";
             setTimeout(() => { playMemeSound("demon.mp3"); }, 100);
-
-        // 2. МЕХАНИКА 50/50 ДЛЯ 228
         } else if (combo === "228") {
             let isBribe = Math.random() < 0.5;
             if (isBribe) {
@@ -214,30 +217,21 @@
                 msg = `🚓 228! ОБЛАВА! Изъято половина очков! (-${lostPoints})`;
             }
             setTimeout(() => { playMemeSound("police.mp3"); }, 100);
-
-        // 3. ТВОЯ НОВАЯ ПОДКУРТКА НА "67" (Проверяем, идут ли 6 и 7 подряд)
         } else if (combo.includes("67")) {
             gained = 40;
             msg = `🔊 ЫЫЫЫ СЫКСЭВЕН ЫЫЫЫ! Поймал комбинацию ${combo}! (+40)`;
             setTimeout(() => { playMemeSound("sixseven.mp3"); }, 100);
-
-        // 4. ОДНОТИПНЫЕ ТРОЙКИ (111, 222, 777 и т.д.)
         } else if (tripleCombos[combo]) {
             gained = tripleCombos[combo].bonus;
             msg = tripleCombos[combo].text;
             if (combo === "777") isSevenCombo = true;
             setTimeout(() => { playMemeSound(tripleCombos[combo].sound); }, 100);
-
-        // 5. ОБЫЧНЫЕ СОВПАДЕНИЯ (ПАРЫ С МНОЖИТЕЛЯМИ)
         } else if (d1 === d2 || d2 === d3 || d1 === d3) {
             let pairedDigit = (d1 === d2) ? d1 : ((d2 === d3) ? d2 : d1);
             let digitMult = pairMultipliers[pairedDigit] || 1.0;
             gained = Math.round(5 * digitMult * roundMultiplier);
             msg = `🪙 Пара [${pairedDigit}]! Дает 5 x${digitMult} x${roundMultiplier.toFixed(1)} = +${gained} очков!`;
-            
             if (pairedDigit === 7) isSevenCombo = true;
-
-        // 6. ОБЫЧНЫЕ ЦИФРЫ
         } else {
             gained = 4; 
             msg = "👀 Просто цифры... (+3)";
@@ -249,7 +243,6 @@
 
         updateUI();
         document.getElementById('memeAlert').innerText = msg;
-
         checkRoundStatus(isSevenCombo);
     }
 
@@ -275,10 +268,10 @@
         
         setTimeout(() => {
             currentRound++;
-            targetScore += 10; 
+            targetScore += 5; // Прибавка 5 очков
             roundMultiplier += 0.1; 
             spinsLeft = baseSpins + (currentRound - 1); 
-            score = 0; 
+            score = 0; // ОБНУЛЕНИЕ ОЧКОВ
             
             updateUI();
             document.getElementById('slots').innerText = "000";
@@ -292,10 +285,10 @@
         
         setTimeout(() => {
             currentRound += 2; 
-            targetScore += 20; 
+            targetScore += 10; 
             roundMultiplier += 0.2; 
             spinsLeft = baseSpins + (currentRound - 1);
-            score = 0;
+            score = 0; // ОБНУЛЕНИЕ ОЧКОВ
             
             updateUI();
             document.getElementById('slots').innerText = "000";
@@ -316,7 +309,7 @@
         setTimeout(() => {
             currentRound = 1;
             score = 0;
-            targetScore = 25;
+            targetScore = 10;
             roundMultiplier = 1.0;
             spinsLeft = baseSpins;
             
